@@ -5,15 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
-    "start": "node --watch index.js"
+    "dev": "node --watch index.js"
   },
   "keywords": [],
   "author": "David Antonio van Overbeek Crusells (https://davidvanoverbeek.netlify.app/)",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^1.41.3",
+    "dotenv": "^18.0.3",
     "express": "^5.2.1",
     "mongoose": "^9.10.1",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^3.1.14"
   }
 }
