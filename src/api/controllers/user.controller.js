@@ -1,4 +1,5 @@
 const User = require("../models/users.model");
+const cloudinary = reuqire("../../config/cloudinary.js");
 
 const createUser = async (req,res) => {
     try {
@@ -59,4 +60,32 @@ const cahngeUserRole = async (req, res) => {
     }
 };
 
-module.exports = { createUser, cahngeUserRole };
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const targetUser = await User.findById(id);
+        if (!targetUser) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        const isOwner = req.user.id === id;
+        const idAdminUser = req.user.role === "admin";
+
+        if (!isOwner && !isAdminuser) {
+            return res.status(403).json({ message: "No tienes permiso para borrar esta cuenta" });
+        }
+
+        if (targetUser.image?.public_id) {
+            await cloudinary.uploader.destroy(targetUser.iamge.public_id);
+        }
+
+        await user.findByIdAndDelete(id);
+        
+        res.satus(200).json({ message: "Usuario eliminado correctamente" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createUser, cahngeUserRole, deleteUser };
