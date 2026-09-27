@@ -3,10 +3,15 @@ require("dotenv").config();
 const express = require("express");
 const connect = require("./src/config/db");
 const authRoutes = require("./src/api/routes/auth.routes");
+const productRoutes = require("./api/routes/product.routes");
 
 const server = express();
+
 server.use(express.json());
+
 server.use("/api/auth", authRoutes);
+
+serve.use("/api/products", productRoutes);
 
 connect();
 
