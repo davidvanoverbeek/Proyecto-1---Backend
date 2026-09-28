@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Product = require("../models/product.model");
 
 const userSchema = new mongoose.Schema(
     {
@@ -19,10 +20,10 @@ const userSchema = new mongoose.Schema(
             url: { type: String, required: true },
             public_id: { type: String, required: true },
         },
-        relatedData: [
+        favorites: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Productos"
+                ref: "Product"
             }
         ]
     },
@@ -34,8 +35,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", function (next) {
     if (!this.isModified("password")) return next(); 
-    this.password = bcrypt.hashSync(this.password, 10);
-    next();
+    this.password = bcrypt.hashSync(this.password, 10);  
 });
 
 userSchema.methods.comparePassword = function (candidatePassword) {

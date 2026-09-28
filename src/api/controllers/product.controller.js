@@ -89,7 +89,7 @@ const deleteProduct = async (req, res) => {
         }
 
         await Product.findByIdAndDelete(id);
-        res.statud(200).json({ message: "Producto eliminado correctamente" });
+        res.status(200).json({ message: "Producto eliminado correctamente" });
     } catch (error) {
         res.status(500).json({ message: error.message });   
     }

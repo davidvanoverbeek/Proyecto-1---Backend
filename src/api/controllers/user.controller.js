@@ -1,5 +1,5 @@
 const User = require("../models/users.model");
-const cloudinary = reuqire("../../config/cloudinary.js");
+const cloudinary = require("../../config/cloudinary.js");
 const Product = require("../models/product.model")
 
 const createUser = async (req,res) => {
@@ -145,12 +145,15 @@ const deleteUser = async (req, res) => {
         }
 
         if (targetUser.image?.public_id) {
-            await cloudinary.uploader.destroy(targetUser.iamge.public_id);
+            const publicId = targetUser.image && targetUser.image.public_id;
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId);
+            };
         }
 
-        await user.findByIdAndDelete(id);
+        await User.findByIdAndDelete(id);
         
-        res.satus(200).json({ message: "Usuario eliminado correctamente" });
+        res.status(200).json({ message: "Usuario eliminado correctamente" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
