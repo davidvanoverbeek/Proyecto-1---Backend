@@ -57,7 +57,7 @@ const cahngeUserRole = async (req, res) => {
 
         res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(500).jsonm({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -116,8 +116,14 @@ const updateUser = async (req, res) => {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
 
+        const oldPublicId = targetUser.image && targetUser.image.public_id;
+
         Object.assign(targetUser, updateData);
         await targetUser.save();
+
+        if (req.file && oldPublicId) {
+            await cloudinary.uploader.destroy(oldPublicId);
+        }
 
         const userResponse = targetUser.toObject();
         delete userResponse.password;
